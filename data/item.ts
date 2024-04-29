@@ -1,11 +1,13 @@
 import prismadb from "@/lib/prismadb"
 
-export const createItem = async (title: string, username: string, pptLink: string, introduction?: string, motivation?: string, conclusion?: string, inspiration?: string) => {
+export const createItem = async (title: string, userId: string, username: string, coverLink: string, pptLink: string, introduction?: string, motivation?: string, conclusion?: string, inspiration?: string) => {
   try {
     const item = await prismadb.item.create({
       data: {
         title,
+        userId,
         username,
+        coverLink,
         pptLink,
         archived: false,
         introduction,
@@ -21,14 +23,16 @@ export const createItem = async (title: string, username: string, pptLink: strin
 }
 
 
-export const updateItem = async (id: string, title?: string, introduction?: string, motivation?: string, conclusion?: string, inspiration?: string) => {
+export const updateItem = async (id: string, coverLink: string, title?: string, pptLink?: string, introduction?: string, motivation?: string, conclusion?: string, inspiration?: string) => {
   try {
     const item = await prismadb.item.update({
       where: {
         id
       },
       data: {
+        coverLink,
         title,
+        pptLink,
         introduction,
         motivation,
         conclusion,

@@ -12,6 +12,7 @@ const ItemsPage = async () => {
             key={item.id}
             id={item.id}
             title={item.title}
+            coverLink={item.coverLink}
             username={item.username}
             date={item.createdAt}
             introduction={item.introduction ? item.introduction : ""}

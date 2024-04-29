@@ -1,6 +1,6 @@
 "use client"
 
-import { Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
 import { z } from "zod"
 import { CirclePlus, FileIcon } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -16,9 +16,11 @@ import { Item } from "@prisma/client"
 import { Input } from "./ui/input"
 import { Progress } from "./ui/progress"
 import { useUser } from "@clerk/nextjs"
-import { useRouter } from "next/navigation"
+import { redirect } from "next/navigation"
+import Image from "next/image"
 
 const formSchema = z.object({
+  cover: z.custom<File>((val) => val instanceof File, "cover is required"),
   title: z.string().min(1, { message: "Title is required!" }),
   introduction: z.string().min(1, { message: "Introducation is required!" }),
   motivation: z.string().min(1, { message: "Motivation is required!" }),
@@ -28,11 +30,9 @@ const formSchema = z.object({
 })
 
 export const ItemCreator = () => {
-  const router = useRouter()
   const { isSignedIn, user } = useUser()
   if (!isSignedIn) {
-    router.push("/sign-in")
-    return
+    redirect("/sign-in")
   }
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -40,6 +40,7 @@ export const ItemCreator = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      cover: undefined,
       title: "",
       introduction: "",
       motivation: "",
@@ -68,8 +69,10 @@ export const ItemCreator = () => {
     const progressInterval = startSimulatedProgress();
     const formData = new FormData()
     const itemData = form.getValues()
+    formData.append("cover", itemData.cover)
     formData.append("ppt", itemData.ppt);
     formData.append("title", itemData.title);
+    formData.append("userId", user.id);
     formData.append("username", user.username!);
     formData.append("introduction", itemData.introduction);
     formData.append("motivation", itemData.motivation);
@@ -88,8 +91,8 @@ export const ItemCreator = () => {
       clearInterval(progressInterval);
       setUploadProgress(100);
       setIsDialogOpen(false)
-      toast.success("Item created!");
       location.reload()
+      toast.success("Item created!");
     }
   }
 
@@ -118,6 +121,65 @@ export const ItemCreator = () => {
         <div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col">
+            <FormField
+                control={form.control}
+                name="cover"
+                render={() => (
+                  <>
+                    <FormLabel>Cover</FormLabel>
+                    <Dropzone
+                      noClick
+                      multiple={false}
+                      onDropAccepted={(acceptedFiles) => {
+                        if (acceptedFiles && acceptedFiles.length > 0) {
+                          form.setValue("cover", acceptedFiles[0])
+                        }
+                      }}
+                    >
+                      {({ getRootProps, getInputProps, acceptedFiles }) => (
+                        <div
+                        {...getRootProps()}
+                          className="p-4 
+                          border-4 
+                          border-dashed
+                          border-primary/10 
+                          rounded-lg 
+                          hover:opacity-75 
+                          transition 
+                          flex 
+                          flex-col 
+                          space-y-2 
+                          items-center 
+                          justify-center"
+                        >
+                        <div className="flex items-center justify-center h-full w-full">
+                          <label
+                            htmlFor="cover-file"
+                            className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer"
+                          >
+                            <div className="relative h-40 w-40">
+                              <Image
+                                fill
+                                alt="Upload"
+                                src={"/placeholder.svg"}
+                                className="rounded-lg object-cover"
+                              />
+                            </div> 
+                            <input
+                              {...getInputProps()}
+                              type="file"
+                              accept="image/*"
+                              id="cover-file"
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      )}
+                    </Dropzone>
+                  </>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="title"
@@ -206,7 +268,7 @@ export const ItemCreator = () => {
                       >
                         <div className="flex items-center justify-center h-full w-full">
                           <label
-                            htmlFor="dropzone-file"
+                            htmlFor="ppt-file"
                             className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer"
                           >
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -233,7 +295,7 @@ export const ItemCreator = () => {
                               {...getInputProps()}
                               type="file"
                               accept=".pptx"
-                              id="dropzone-file"
+                              id="ppt-file"
                               className="hidden"
                             />
                           </label>

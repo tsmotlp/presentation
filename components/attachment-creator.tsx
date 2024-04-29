@@ -20,8 +20,6 @@ interface AttachmentCreatorProps {
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required!" }),
   pdfLink: z.string().min(1, { message: "Attachment file link is required!" }),
-  codeLink: z.optional(z.string()),
-  presentationLink: z.optional(z.string()),
 })
 
 export const AttachmentCreator = ({
@@ -33,8 +31,6 @@ export const AttachmentCreator = ({
     defaultValues: {
       title: "",
       pdfLink: "",
-      codeLink: "",
-      presentationLink: ""
     }
   })
 
@@ -44,12 +40,11 @@ export const AttachmentCreator = ({
       title: formData.title,
       itemId: itemId,
       pdfLink: formData.pdfLink,
-      codeLink: formData.codeLink,
-      presentationLink: formData.presentationLink,
     }))
     if (!response || response.status !== 200) {
       toast.error("Failed to update presentation info!")
     } else {
+      setIsDialogOpen(false)
       toast.success("Presentation info updated!");
     }
   }
@@ -103,34 +98,6 @@ export const AttachmentCreator = ({
                       <Textarea {...field} />
                     </FormControl>
                     <FormDescription>The link of your attachment</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="codeLink"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Code Link</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormDescription>The code link associated to the attachment if code exists</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="presentationLink"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormDescription>The presentation link associated to the attachment if presentation exists</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

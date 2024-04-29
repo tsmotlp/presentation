@@ -14,21 +14,21 @@ datasource db {
 }
 
 model Attach {
-  id               String   @id @default(uuid())
-  title            String
-  pdfLink          String?
-  codeLink         String?
-  presentationLink String?
-  Item             Item     @relation(fields: [itemId], references: [id])
-  itemId           String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id        String   @id @default(uuid())
+  title     String
+  pdfLink   String?
+  Item      Item     @relation(fields: [itemId], references: [id])
+  itemId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Item {
   id           String   @id @default(uuid())
   title        String
+  userId       String
   username     String
+  coverLink    String
   pptLink      String
   attaches     Attach[]
   archived     Boolean

@@ -4,6 +4,7 @@ import { Presentation } from "lucide-react"
 import Link from "next/link"
 import { ItemCreator } from "@/components/item-creator"
 import { SignInButton, useAuth, UserButton } from "@clerk/nextjs"
+import { ModeToggle } from "./mode-toggle"
 
 export const Navbar = () => {
   const { isSignedIn } = useAuth()
@@ -19,12 +20,13 @@ export const Navbar = () => {
         <div className="flex items-center gap-x-2">
           <ItemCreator />
           {isSignedIn ? (
-            <UserButton />
+            <UserButton afterSignOutUrl="/" />
           ) : (
             <div className="text-sm">
               <SignInButton />
             </div>
           )}
+          <ModeToggle />
         </div>
       </div>
     </div>
