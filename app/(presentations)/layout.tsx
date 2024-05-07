@@ -8,7 +8,7 @@ const Layout = ({
   return (
     <div className="h-full w-full flex flex-col">
       <Navbar />
-      <div className="w-full">{children}</div>
+      <div className="h-full w-full">{children}</div>
     </div>
   )
 }

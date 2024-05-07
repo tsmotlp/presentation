@@ -30,7 +30,10 @@ export const Navbar = () => {
               <Button
                 variant="secondary"
                 size="sm"
-              >Sign in to add an item</Button>
+                className="text-sky-500"
+              >
+                Sign in to add an item
+              </Button>
             </SignInButton>
           )}
           
