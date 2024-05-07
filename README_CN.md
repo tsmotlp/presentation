@@ -55,7 +55,7 @@ npm run dev
 然后，您可以通过访问 `http://localhost:3000` 来使用 `Presentation`。
 
 ## 版权与许可
-本仓库的内容根据 [MIT许可证](https://github.com/tsmotlp/presentation/blob/master/LICENSE) 授权。我们尊重并遵守每篇论文和资源的版权及使用权限。
+本仓库的内容根据 [MIT许可证](https://github.com/tsmotlp/presentation/blob/master/LICENSE) 授权。
 
 ## 联系方式
 如果您有任何问题或建议，请通过以下方式联系我们：
