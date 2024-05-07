@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner"
+import { useAuth } from "@clerk/nextjs"
 
 export const AttachmentsTableColumns: ColumnDef<Attach>[] = [
   {
@@ -59,26 +60,27 @@ export const AttachmentsTableColumns: ColumnDef<Attach>[] = [
   {
     header: "Action",
     cell: ({ row }) => {
+      const { isSignedIn } = useAuth()
       return (
         <>
-          {row.original.id === "ppt" ? null : (
+          {isSignedIn ? (
             <Button
-              variant="ghost"
-              size="xs"
-              onClick={async() => {
-                const response = await axios.delete(`/api/attach/${row.original.id}`)
-                if (!response || response.status !== 200) {
-                  toast.error("Failed to remove item")
-                  return
-                } else {
-                  toast.success("Item removed!")
-                  location.reload()
-                }
-              }}
-            >
-              <Trash2 className="h-4 w-4 text-red-400 text-muted-foreground" />
-            </Button>
-          )}
+            variant="ghost"
+            size="xs"
+            onClick={async() => {
+              const response = await axios.delete(`/api/attach/${row.original.id}`)
+              if (!response || response.status !== 200) {
+                toast.error("Failed to remove item")
+                return
+              } else {
+                toast.success("Item removed!")
+                location.reload()
+              }
+            }}
+          >
+            <Trash2 className="h-4 w-4 text-red-400 text-muted-foreground" />
+          </Button>
+          ): (null)}
         </>
       )
     }

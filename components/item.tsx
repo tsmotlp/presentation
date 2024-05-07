@@ -6,11 +6,13 @@ import { format } from "date-fns";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { toast } from "sonner"
+import { useAuth } from '@clerk/clerk-react';
 
 interface ItemProps {
   id: string,
   title: string,
   coverLink: string,
+  itemUserId: string,
   username: string,
   date: Date,
   introduction: string,
@@ -20,6 +22,7 @@ export const Item = ({
   id,
   title,
   coverLink,
+  itemUserId,
   username,
   date,
   introduction,
@@ -28,13 +31,13 @@ export const Item = ({
     const response = await axios.delete(`/api/item/${id}`)
     if (!response || response.status !== 200) {
       toast.error("Failed to remove item")
-      return
     } else {
       toast.success("Item removed!")
+      location.reload()
     }
   }
   
-  console.log("cover link", coverLink)
+  const { isSignedIn, userId } = useAuth()
   return (
     <div className="w-full flex flex-col rounded-lg border hover:cursor-pointer shadow transition hover:shadow-xl dark:bg-secondary dark:hover:bg-primary/10 p-4">
       <Link href={`/${id}`}>
@@ -64,13 +67,15 @@ export const Item = ({
                       {format(new Date(date), "yyyy/MM/dd")}
                     </span>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleRemoveItem}
-                  >
-                    <Trash2 className="h-4 w-4 text-red-500" />
-                  </Button>
+                  {isSignedIn && userId === itemUserId && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleRemoveItem}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-500" />
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

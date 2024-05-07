@@ -13,6 +13,7 @@ const ItemsPage = async () => {
             id={item.id}
             title={item.title}
             coverLink={item.coverLink}
+            itemUserId={item.userId}
             username={item.username}
             date={item.createdAt}
             introduction={item.introduction ? item.introduction : ""}

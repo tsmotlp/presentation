@@ -41,10 +41,7 @@ export const PresentationDetails = ({
   item,
   attachments
 }: PresentationDetailsProps) => {
-  const { isSignedIn, userId } = useAuth()
-  if (!isSignedIn) {
-    redirect("/sign-in")
-  }
+  const { userId, isSignedIn } = useAuth()
   const [editable, setEditable] = useState(false)
   const [pptLink, setPptLink] = useState(item.pptLink)
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -139,7 +136,7 @@ export const PresentationDetails = ({
               </span>
             </div>
           </div>
-          {userId === item.userId && (
+          {isSignedIn && userId === item.userId && (
             <>
               {editable ? (
                 <Button
@@ -200,7 +197,7 @@ export const PresentationDetails = ({
                         >
                         <div className="flex items-center justify-center h-full w-full">
                           <label
-                            htmlFor="dropzone-file"
+                            htmlFor="cover-file"
                             className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer"
                           >
                             <div className="relative h-40 w-40">
@@ -215,7 +212,7 @@ export const PresentationDetails = ({
                               {...getInputProps()}
                               type="file"
                               accept="image/*"
-                              id="dropzone-file"
+                              id="cover-file"
                               className="hidden"
                             />
                           </label>
@@ -331,7 +328,7 @@ export const PresentationDetails = ({
                         >
                           <div className="flex items-center justify-center h-full w-full">
                             <label
-                              htmlFor="dropzone-file"
+                              htmlFor="ppt-file"
                               className="flex flex-col items-center justify-center w-full h-full rounded-lg cursor-pointer"
                             >
                               <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -358,7 +355,7 @@ export const PresentationDetails = ({
                                 {...getInputProps()}
                                 type="file"
                                 accept=".pptx"
-                                id="dropzone-file"
+                                id="ppt-file"
                                 className="hidden"
                               />
                             </label>
@@ -410,7 +407,9 @@ export const PresentationDetails = ({
         <div className="flex flex-col gap-y-2">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-medium text-sky-500">Attachments</h3>
-            <AttachmentCreator itemId={item.id} />
+            {isSignedIn && userId === item.userId && (
+              <AttachmentCreator itemId={item.id} />
+            )}
           </div>
           <AttachmentsTable attachmemts={attachments} />
         </div>

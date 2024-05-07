@@ -16,7 +16,6 @@ import { Item } from "@prisma/client"
 import { Input } from "./ui/input"
 import { Progress } from "./ui/progress"
 import { useUser } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
 import Image from "next/image"
 
 const formSchema = z.object({
@@ -31,9 +30,6 @@ const formSchema = z.object({
 
 export const ItemCreator = () => {
   const { isSignedIn, user } = useUser()
-  if (!isSignedIn) {
-    redirect("/sign-in")
-  }
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);

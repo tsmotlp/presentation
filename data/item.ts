@@ -81,6 +81,9 @@ export const deleteItem = async (id: string) => {
       where: {
         id
       },
+      include: {
+        attaches: true
+      }
     })
     return item
   } catch (error) {

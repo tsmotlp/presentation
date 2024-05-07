@@ -46,6 +46,7 @@ export const AttachmentCreator = ({
     } else {
       setIsDialogOpen(false)
       toast.success("Presentation info updated!");
+      location.reload()
     }
   }
 

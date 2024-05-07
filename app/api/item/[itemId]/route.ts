@@ -90,7 +90,28 @@ export const DELETE = async (
   {params}: {params: {itemId: string}}
 ) => {
   try {
-    await deleteItem(params.itemId)
+    const item = await deleteItem(params.itemId)
+    // 删除cover
+    const oldCoverPath = path.join(process.cwd(), "public", item.coverLink)
+    if (fs.existsSync(oldCoverPath)) {
+      try {
+        fs.unlinkSync(oldCoverPath)
+        console.log("COVER FILE REMOVED", oldCoverPath)
+      } catch (error) {
+        console.log("REMOVE COVER FILE ERROR", error)
+      }
+    }
+    // 删除ppt
+    // 删除旧的文件
+    const oldPPTPath = path.join(process.cwd(), "public", item.pptLink)
+    if (fs.existsSync(oldPPTPath)) {
+      try {
+        fs.unlinkSync(oldPPTPath)
+        console.log("PPT FILE REMOVED", oldPPTPath)
+      } catch (error) {
+        console.log("REMOVE PPT FILE ERROR", error)
+      }
+    }
     return new NextResponse("Item removed!", { status: 200 })
   } catch (error) {
     console.log("REMOVE ITEM ERROR", error)
