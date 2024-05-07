@@ -30,7 +30,6 @@ export const AttachmentsTable = ({
     data: attachmemts,
     getCoreRowModel: getCoreRowModel()
   })
-  console.log("attachments", attachmemts)
   return (
     <Table>
       <TableHeader>

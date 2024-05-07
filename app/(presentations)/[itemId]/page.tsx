@@ -12,7 +12,7 @@ const ItemPage = async ({
   return (
     <>
       {item && (
-        <PresentationDetails item={item} attachments={item.attaches ? item.attaches : []} />
+        <PresentationDetails item={item} attachments={item.attachments ? item.attachments : []} />
       )}
     </>
   )

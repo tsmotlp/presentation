@@ -18,6 +18,11 @@
 
 /prisma/presentations.db
 
+/public/ppts
+/public/images
+
+presentations.log
+
 # misc
 .DS_Store
 *.pem

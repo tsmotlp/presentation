@@ -18,7 +18,6 @@ export const PATCH = async(
     const motivation = formData.get("motivation") as string;
     const conclusion = formData.get("conclusion") as string;
     const inspiration = formData.get("inspiration") as string;
-    console.log("PPT", ppt)
 
     const oldItem = await getItem(params.itemId)
     if (!oldItem) {
@@ -40,11 +39,8 @@ export const PATCH = async(
       await fsPromises.writeFile(`public${coverUrl}`, coverBuffer);
       coverLink = coverUrl
 
-      console.log("delete old image")
-      console.log("old item", oldItem)
       // 删除旧的文件
       const oldCoverPath = path.join(process.cwd(), "public", oldItem.coverLink)
-      console.log("oldCoverPath", oldCoverPath)
       if (fs.existsSync(oldCoverPath)) {
         try {
           fs.unlinkSync(oldCoverPath)

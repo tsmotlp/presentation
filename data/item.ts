@@ -66,7 +66,7 @@ export const getItemWithAttachments = async (id: string) => {
         id
       },
       include: {
-        attaches: true
+        attachments: true
       }
     })
     return item
@@ -77,19 +77,30 @@ export const getItemWithAttachments = async (id: string) => {
 
 export const deleteItem = async (id: string) => {
   try {
-    const item = await prismadb.item.delete({
-      where: {
-        id
-      },
-      include: {
-        attaches: true
-      }
-    })
-    return item
+    // 开始事务处理
+    const result = await prismadb.$transaction(async (transaction) => {
+      // 首先删除所有依赖的附件
+      await transaction.attachment.deleteMany({
+        where: {
+          itemId: id  // 确保这里的字段名与数据库模型匹配
+        }
+      });
+
+      // 删除项目
+      const item = await transaction.item.delete({
+        where: {
+          id
+        }
+      });
+
+      return item;
+    });
+    return result;
   } catch (error) {
-    console.log("DELETE ITEM ERROR", error)
+    console.error("DELETE ITEM ERROR", error);
+    throw error;  // 将错误向上抛出，以便调用者可以处理
   }
-}
+};
 
 export const getAllItems = async () => {
   try {

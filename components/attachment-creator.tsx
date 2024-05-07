@@ -36,7 +36,7 @@ export const AttachmentCreator = ({
 
   const onSubmit = async () => {
     const formData = form.getValues()
-    const response = await axios.post("/api/attach", JSON.stringify({
+    const response = await axios.post("/api/attachment", JSON.stringify({
       title: formData.title,
       itemId: itemId,
       pdfLink: formData.pdfLink,

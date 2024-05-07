@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Attach {
+model Attachment {
   id        String   @id @default(uuid())
   title     String
   pdfLink   String?
@@ -24,18 +24,18 @@ model Attach {
 }
 
 model Item {
-  id           String   @id @default(uuid())
+  id           String       @id @default(uuid())
   title        String
   userId       String
   username     String
   coverLink    String
   pptLink      String
-  attaches     Attach[]
+  attachments  Attachment[]
   archived     Boolean
   introduction String?
   motivation   String?
   conclusion   String?
   inspiration  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }

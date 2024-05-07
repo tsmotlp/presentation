@@ -1,7 +1,7 @@
 "use client"
 import { Attach } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-import { BsFileEarmarkPdf } from "react-icons/bs";
+import { FileIcon } from "lucide-react";
 import { BsFileEarmarkPpt } from "react-icons/bs";
 import { Trash2 } from "lucide-react"
 import Link from "next/link";
@@ -20,43 +20,13 @@ export const AttachmentsTableColumns: ColumnDef<Attach>[] = [
           legacyBehavior
         >
           <div className="flex items-center gap-x-1">
-            {row.original.id === "ppt" ? (
-              <BsFileEarmarkPpt className="h-4 w-4 text-red-500" />
-            ) : (
-              <BsFileEarmarkPdf className="h-4 w-4 text-red-500" />
-            )}
+            <FileIcon className="h-4 w-4 text-sky-500" />
             <span className="truncate text-muted-foreground hover:underline hover:cursor-pointer">{row.original.title}</span>
           </div>
         </Link>
       )
     }
   },
-  // {
-  //   header: "Code",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <Link
-  //         href={row.original.codeLink ? row.original.codeLink : ""}
-  //         legacyBehavior
-  //       >
-  //         <span className="truncate text-muted-foreground hover:underline hover:cursor-pointer">{row.original.codeLink}</span>
-  //       </Link>
-  //     )
-  //   }
-  // },
-  // {
-  //   header: "Presentation",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <Link
-  //         href={row.original.presentationLink ? row.original.presentationLink : ""}
-  //         legacyBehavior
-  //       >
-  //         <span className="truncate text-muted-foreground hover:underline hover:cursor-pointer">{row.original.presentationLink}</span>
-  //       </Link>
-  //     )
-  //   }
-  // },
   {
     header: "Action",
     cell: ({ row }) => {
@@ -68,10 +38,9 @@ export const AttachmentsTableColumns: ColumnDef<Attach>[] = [
             variant="ghost"
             size="xs"
             onClick={async() => {
-              const response = await axios.delete(`/api/attach/${row.original.id}`)
+              const response = await axios.delete(`/api/attachment/${row.original.id}`)
               if (!response || response.status !== 200) {
                 toast.error("Failed to remove item")
-                return
               } else {
                 toast.success("Item removed!")
                 location.reload()

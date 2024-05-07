@@ -40,7 +40,7 @@ export const Item = ({
   const { isSignedIn, userId } = useAuth()
   return (
     <div className="w-full flex flex-col rounded-lg border hover:cursor-pointer shadow transition hover:shadow-xl dark:bg-secondary dark:hover:bg-primary/10 p-4">
-      <Link href={`/${id}`}>
+      <Link href={`/${id}`} legacyBehavior>
         <div className="w-full">
           <div className="flex gap-x-6">
             <Image
