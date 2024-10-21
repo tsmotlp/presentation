@@ -1,13 +1,12 @@
 import { Item as PresentationItem } from "@/components/item"
 import { getAllItems } from "@/data/item"
-import { Image } from "next/image"
 
 const ItemsPage = async () => {
   const items = await getAllItems()
   return (
     <>
       {items && items.length > 0 ? (
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex justify-center">
           <div className="w-full 2xl:w-1/2 grid grid-cols-1 gap-6 p-6">
             {items
               .sort(

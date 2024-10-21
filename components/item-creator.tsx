@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { z } from "zod"
 import { CirclePlus, FileIcon } from "lucide-react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -93,6 +93,16 @@ export const ItemCreator = () => {
     }
   }
 
+  // 在这里添加新的 useEffect
+  useEffect(() => {
+    return () => {
+      // Clean up the object URL
+      if (form.getValues().cover instanceof File) {
+        URL.revokeObjectURL(URL.createObjectURL(form.getValues().cover));
+      }
+    };
+  }, [form]);
+
   return (
     <Dialog
       open={isDialogOpen}
@@ -158,7 +168,9 @@ export const ItemCreator = () => {
                               <Image
                                 fill
                                 alt="Upload"
-                                src={"/placeholder.svg"}
+                                src={acceptedFiles && acceptedFiles[0] 
+                                  ? URL.createObjectURL(acceptedFiles[0])
+                                  : "/placeholder.svg"}
                                 className="rounded-lg object-cover"
                               />
                             </div> 

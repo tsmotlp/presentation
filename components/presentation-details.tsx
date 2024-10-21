@@ -46,6 +46,7 @@ export const PresentationDetails = ({
   const [pptLink, setPptLink] = useState(item.pptLink)
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [coverPreview, setCoverPreview] = useState(item.coverLink);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -175,13 +176,14 @@ export const PresentationDetails = ({
                       multiple={false}
                       onDropAccepted={(acceptedFiles) => {
                         if (acceptedFiles && acceptedFiles.length > 0) {
-                          form.setValue("cover", acceptedFiles[0])
+                          form.setValue("cover", acceptedFiles[0]);
+                          setCoverPreview(URL.createObjectURL(acceptedFiles[0]));
                         }
                       }}
                     >
                       {({ getRootProps, getInputProps, acceptedFiles }) => (
                         <div
-                        {...getRootProps()}
+                          {...getRootProps()}
                           className="p-4 
                           border-4 
                           border-dashed
@@ -204,7 +206,7 @@ export const PresentationDetails = ({
                               <Image
                                 fill
                                 alt="Upload"
-                                src={"/placeholder.svg"}
+                                src={coverPreview}
                                 className="rounded-lg object-cover"
                               />
                             </div> 
@@ -390,7 +392,7 @@ export const PresentationDetails = ({
               <p>{form.getValues().inspiration}</p>
             </div>
             <div className="flex flex-col gap-y-2">
-              <h3 className="text-xl font-medium text-sky-500">PoweProint</h3>
+              <h3 className="text-xl font-medium text-sky-500">PowerProint</h3>
               <div 
                 role="button"
                 onClick={() => {

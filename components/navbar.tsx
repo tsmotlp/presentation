@@ -6,6 +6,7 @@ import { ItemCreator } from "@/components/item-creator"
 import { UserButton, useAuth, SignInButton } from "@clerk/nextjs"
 import { ModeToggle } from "./mode-toggle"
 import { Button } from "./ui/button"
+import { FaGithub } from "react-icons/fa";
 
 
 export const Navbar = () => {
@@ -36,7 +37,6 @@ export const Navbar = () => {
               </Button>
             </SignInButton>
           )}
-          
           <ModeToggle />
         </div>
       </div>
